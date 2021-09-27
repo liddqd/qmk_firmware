@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [1] = LAYOUT(
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
         _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL,           _______,
-        _______, _______, RGB_VAI, _______, _______, _______, _______, _______, KC_UP,   _______, _______, _______, _______,                   _______,
+        _______, _______, RGB_VAI, _______, _______, _______, _______, KC_PGUP, KC_UP,   KC_PGDN, _______, _______, _______,                   _______,
         _______, _______, RGB_VAD, _______, _______, _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, _______, _______,          _______,
         _______, _______, _______, RGB_HUI, _______, _______, RESET,   NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
@@ -58,7 +58,84 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 };
+/*
+    LED LAYOUT (total 98 addr LED)(
+        ___0___, ___6___, __12___, __18___, __23___, __28___, __34___, __39___, __44___, __50___, __56___, __61___, __66___, __70___,          SRLKNOB,
+        ___1___, ___7___, __13___, __19___, __24___, __29___, __35___, __40___, __45___, __51___, __57___, __62___, __79___, __86___           __73___,
+        ___2___, ___8___, __14___, __20___, __25___, __30___, __36___, __41___, __46___  __52___, __58___, __63___, __90___,                   __76___,
+        ___3___, ___9___, __15___, __21___, __26___, __31___, __37___, __42___, __47___, __53___, __59___, __64___, __95___, __97___,          __87___,
+        ___4___, __67___, __10___, __16___, __22___, __27___, __32___  __38___, __43___, __48___, __54___, __60___,          __91___, __94___, __83___,
+        ___5___, __11___, __17___,                            __33___,                            __49___, __55___, __65___, __96___, __98___, __80___
+    ),
+
+    LEFT SIDE LED        RIGHT SIDE LED
+        __68___,           __69___,
+        __71___,           __72___,
+        __74___,           __75___,
+        __77___,           __78___,
+        __81___,           __82___,
+        __84___,           __85___,
+        __88___,           __89___,
+        __92___,           __93___,
+
+     Been verfied by tedious work late at night, dont expect there to be no mistakes. Done on ISO version. ANSI is probably slightly different layout.
+
+*/
+
 // clang-format on
+
+//const uint8_t RGB_LAYER_1[] = {6, 12, 18, 23, 28, 34, 39, 44, 50, 56, 61, 7, 86, 14, 15, 16, 37, 42, 47, 53, 46, 94, 96, 98, 80};
+const uint8_t RGB_LAYER_1[2] = {6, 16};
+const uint8_t RGB_SIDES[16] = {68, 69, 71, 72, 74, 75, 77, 78, 81, 82, 84, 85, 88, 89, 92, 93};
+
+// set RGB indicators
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (host_keyboard_led_state().caps_lock) {
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
+                rgb_matrix_set_color(i, RGB_RED);
+            }
+        }
+    }
+    if  (layer_state_is(1)) {
+        //rgb_matrix_set_color_all(RGB_OFF); //side led off
+
+        //keep side led
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
+                rgb_matrix_set_color(i, RGB_OFF);
+            }
+        }
+        rgb_matrix_set_color(6, RGB_CYAN);      //KC_F1
+        rgb_matrix_set_color(12, RGB_CYAN);     //KC_F2
+        rgb_matrix_set_color(18, RGB_CYAN);     //KC_F3
+        rgb_matrix_set_color(23, RGB_CYAN);     //KC_F4
+        rgb_matrix_set_color(28, RGB_CYAN);     //KC_F5
+        rgb_matrix_set_color(34, RGB_CYAN);     //KC_F6
+        rgb_matrix_set_color(39, RGB_CYAN);     //KC_F7
+        rgb_matrix_set_color(44, RGB_CYAN);     //KC_F8
+        rgb_matrix_set_color(50, RGB_CYAN);     //KC_F9
+        rgb_matrix_set_color(56, RGB_CYAN);     //KC_F10
+        rgb_matrix_set_color(61, RGB_CYAN);     //KC_F11
+        rgb_matrix_set_color(7, RGB_CYAN);      //KC_1
+        rgb_matrix_set_color(86, RGB_CYAN);     //KC_BSPC
+        rgb_matrix_set_color(14, RGB_CYAN);     //KC_W
+        rgb_matrix_set_color(15, RGB_CYAN);     //KC_S
+        rgb_matrix_set_color(16, RGB_CYAN);     //KC_X
+        rgb_matrix_set_color(37, RGB_CYAN);     //KC_H
+        rgb_matrix_set_color(42, RGB_CYAN);     //KC_J
+        rgb_matrix_set_color(47, RGB_CYAN);     //KC_K
+        rgb_matrix_set_color(53, RGB_CYAN);     //KC_L
+        rgb_matrix_set_color(46, RGB_CYAN);     //KC_I
+        rgb_matrix_set_color(41, RGB_CYAN);     //KC_U /KC_PGUP
+        rgb_matrix_set_color(52, RGB_CYAN);     //KC_O /KC_PGDN
+        rgb_matrix_set_color(94, RGB_CYAN);     //KC_UP
+        rgb_matrix_set_color(96, RGB_CYAN);     //KC_LEFT
+        rgb_matrix_set_color(98, RGB_CYAN);     //KC_DOWN
+        rgb_matrix_set_color(80, RGB_CYAN);     //KC_RGHT
+        rgb_matrix_set_color(32, RGB_RED);      //KC_B
+    }
+}
 
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
@@ -84,23 +161,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true; // Process all other keycodes normally
 }
-
-
-// set RGB indicators
-void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (host_keyboard_led_state().caps_lock) {
-        for (uint8_t i = led_min; i <= led_max; i++) {
-            if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
-                rgb_matrix_set_color(i, RGB_RED);
-            }
-        }
-    }
-    if  (layer_state_is(1)) {
-        for (uint8_t i = led_min; i <= led_max; i++) {
-            if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
-                rgb_matrix_set_color(i, RGB_BLUE);
-            }
-        }
-    }
-}
-
