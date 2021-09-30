@@ -14,7 +14,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include QMK_KEYBOARD_H
-#include "keymap_danish.h"
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -83,13 +82,76 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
 // clang-format on
+int RGB_FKEYS[] = {6, 12, 18, 23, 28, 34, 39, 44, 50, 56, 61, 66};
+int RGB_ALPHAS[] = {8, 14, 20, 25, 30, 36, 51, 46, 52, 58, 63, 
+                    9, 15, 21, 26, 31, 37, 42, 47, 53, 59, 64,
+                    10, 16, 22, 27, 32, 38, 43};
+int RGB_MISC[] = {1, 67, 48, 54, 60, 62, 79, 90, 95};
+int RGB_EDIT[] = {2, 3, 33, 86, 97};
+int RGB_NUMERICS[] = {7, 13, 19, 24, 29, 35, 40, 45, 51, 57};
+int RGB_MODIFIERS[] = {4, 5, 11, 17, 49, 55, 65, 91};
+int RGB_NAVIGATION[] = {0, 94, 96, 98, 80};
+int RGB_CONTEXTUAL[] = {70, 73, 76, 87, 83};
+int RGB_SIDES_LEFT[] = {68, 71, 74, 77, 81, 84, 88, 92};
+int RGB_SIDES_RIGHT[] = {69, 72, 75, 78, 82, 85, 89, 93};
+int RGB_LAYER_1[] = {
+        6,  //KC_F1
+        12, //KC_F2
+        18, //KC_F3
+        23, //KC_F4
+        28, //KC_F5
+        34, //KC_F6
+        39, //KC_F7
+        44, //KC_F8
+        50, //KC_F9
+        56, //KC_F10
+        61, //KC_F11
+        7,  //KC_1
+        86, //KC_BSPC
+        14, //KC_W
+        15, //KC_S
+        16, //KC_X
+        37, //KC_H
+        42, //KC_J
+        47, //KC_K
+        53, //KC_L
+        46, //KC_I
+        41, //KC_U /KC_PGUP
+        52, //KC_O /KC_PGDN
+        94, //KC_UP
+        96, //KC_LEFT
+        98, //KC_DOWN
+        80, //KC_RGHT
+        32  //KC_B
+};
 
-//const uint8_t RGB_LAYER_1[] = {6, 12, 18, 23, 28, 34, 39, 44, 50, 56, 61, 7, 86, 14, 15, 16, 37, 42, 47, 53, 46, 94, 96, 98, 80};
-const uint8_t RGB_LAYER_1[2] = {6, 16};
-const uint8_t RGB_SIDES[16] = {68, 69, 71, 72, 74, 75, 77, 78, 81, 82, 84, 85, 88, 89, 92, 93};
+// Loop for setting groups of LED's each cycle function
+void rgb_matrix_set_group(int *index, int array_size, uint8_t red, uint8_t green, uint8_t blue) {
+	for (uint8_t i = 0; i < array_size; i++){
+		rgb_matrix_set_color(index[i], red, green, blue);
+	}
+}
 
+void rgb_matrix_indicators_kb(void) {
+	// letter keys change on CAPS Lock ALL leds except rgb_side
+	if (host_keyboard_led_state().caps_lock) {
+		rgb_matrix_set_group(RGB_MODIFIERS, (&RGB_MODIFIERS)[1] - RGB_MODIFIERS, 255, 0, 0);
+		rgb_matrix_set_group(RGB_NAVIGATION, (&RGB_NAVIGATION)[1] - RGB_NAVIGATION, 255, 0, 0);
+		rgb_matrix_set_group(RGB_CONTEXTUAL, (&RGB_CONTEXTUAL)[1] - RGB_CONTEXTUAL, 255, 0, 0);
+		rgb_matrix_set_group(RGB_EDIT, (&RGB_EDIT)[1] - RGB_EDIT, 255, 0, 0);
+		rgb_matrix_set_group(RGB_SIDES_LEFT, (&RGB_SIDES_LEFT)[1] - RGB_SIDES_LEFT, 255, 0, 0);
+		rgb_matrix_set_group(RGB_SIDES_RIGHT, (&RGB_SIDES_RIGHT)[1] - RGB_SIDES_RIGHT, 255, 0, 0);
+	}
+	if (layer_state_is(1)) {
+		rgb_matrix_set_group(RGB_ALPHAS, (&RGB_ALPHAS)[1] - RGB_ALPHAS, 0, 0, 0);
+		rgb_matrix_set_group(RGB_NUMERICS, (&RGB_NUMERICS)[1] - RGB_NUMERICS, 0, 0, 0);
+		rgb_matrix_set_group(RGB_MISC, (&RGB_MISC)[1] - RGB_MISC, 0, 0, 0);
+		rgb_matrix_set_group(RGB_LAYER_1, (&RGB_LAYER_1)[1] - RGB_LAYER_1, 0, 255, 255);
+		rgb_matrix_set_color(32, RGB_RED);
+	}
+}
 // set RGB indicators
-void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+/*void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (host_keyboard_led_state().caps_lock) {
         for (uint8_t i = led_min; i <= led_max; i++) {
             if (g_led_config.flags[i] & LED_FLAG_KEYLIGHT) {
@@ -106,48 +168,9 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(i, RGB_OFF);
             }
         }
-        rgb_matrix_set_color(6, RGB_CYAN);      //KC_F1
-        rgb_matrix_set_color(12, RGB_CYAN);     //KC_F2
-        rgb_matrix_set_color(18, RGB_CYAN);     //KC_F3
-        rgb_matrix_set_color(23, RGB_CYAN);     //KC_F4
-        rgb_matrix_set_color(28, RGB_CYAN);     //KC_F5
-        rgb_matrix_set_color(34, RGB_CYAN);     //KC_F6
-        rgb_matrix_set_color(39, RGB_CYAN);     //KC_F7
-        rgb_matrix_set_color(44, RGB_CYAN);     //KC_F8
-        rgb_matrix_set_color(50, RGB_CYAN);     //KC_F9
-        rgb_matrix_set_color(56, RGB_CYAN);     //KC_F10
-        rgb_matrix_set_color(61, RGB_CYAN);     //KC_F11
-        rgb_matrix_set_color(7, RGB_CYAN);      //KC_1
-        rgb_matrix_set_color(86, RGB_CYAN);     //KC_BSPC
-        rgb_matrix_set_color(14, RGB_CYAN);     //KC_W
-        rgb_matrix_set_color(15, RGB_CYAN);     //KC_S
-        rgb_matrix_set_color(16, RGB_CYAN);     //KC_X
-        rgb_matrix_set_color(37, RGB_CYAN);     //KC_H
-        rgb_matrix_set_color(42, RGB_CYAN);     //KC_J
-        rgb_matrix_set_color(47, RGB_CYAN);     //KC_K
-        rgb_matrix_set_color(53, RGB_CYAN);     //KC_L
-        rgb_matrix_set_color(46, RGB_CYAN);     //KC_I
-        rgb_matrix_set_color(41, RGB_CYAN);     //KC_U /KC_PGUP
-        rgb_matrix_set_color(52, RGB_CYAN);     //KC_O /KC_PGDN
-        rgb_matrix_set_color(94, RGB_CYAN);     //KC_UP
-        rgb_matrix_set_color(96, RGB_CYAN);     //KC_LEFT
-        rgb_matrix_set_color(98, RGB_CYAN);     //KC_DOWN
-        rgb_matrix_set_color(80, RGB_CYAN);     //KC_RGHT
         rgb_matrix_set_color(32, RGB_RED);      //KC_B
     }
-}
-
-#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-      tap_code(KC_VOLU);
-    } else {
-      tap_code(KC_VOLD);
-    }
-    return true;
-}
-#endif
-
+} */
 
 // rgb red when RESET
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -161,3 +184,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true; // Process all other keycodes normally
 }
+
+#ifdef ENCODER_ENABLE
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (clockwise) {
+      tap_code(KC_VOLU);
+    } else {
+      tap_code(KC_VOLD);
+    }
+    return true;
+}
+#endif
