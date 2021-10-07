@@ -16,7 +16,7 @@
 
 #pragma once
 
-/* Set debounce time to 16ms from 5ms -- double input issue [SPACE] 
+/* Set debounce time to 10ms from 5ms -- double input issue [SPACE] 
    from ../../../gmmk/pro/config.h */
 
 // number of milliseconds to wait until rgb automatically turns off

@@ -1,6 +1,6 @@
 # liddqd's gmmk pro config
 
-- ~~set debounce to 16ms as default on stock firmware to eliminate double input especially [SPACE]~~ is set back to 5ms. Switches were mostlikely the cause.
+- continued experimentation with debounce 5ms -> 10ms
 	- set in keyboards/gmmk/pro/config.h
 - capslock indicators, set edit + modifier keys to red
 - fn/mo(1) turn off alphas, set hotkeys to cyan
