@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
         _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL,           _______,
         _______, _______, RGB_VAI, _______, _______, _______, _______, KC_PGUP, KC_UP,   KC_PGDN, _______, _______, _______,                   _______,
-        _______, _______, RGB_VAD, _______, _______, _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, _______, _______,          _______,
+        _______, _______, RGB_VAD, _______, _______, _______, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,  _______, _______, _______,          _______,
         _______, _______, _______, RGB_HUI, _______, _______, RESET,   NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
     ),
@@ -114,7 +114,8 @@ int RGB_LAYER_1[] = {
         37, //KC_H
         42, //KC_J
         47, //KC_K
-        53, //KC_L
+        53, //KC_Li
+	59, //KC_SCLN
         46, //KC_I
         41, //KC_U /KC_PGUP
         52, //KC_O /KC_PGDN
@@ -122,7 +123,7 @@ int RGB_LAYER_1[] = {
         96, //KC_LEFT
         98, //KC_DOWN
         80, //KC_RGHT
-        32  //KC_B
+        32 //KC_B
 };
 
 // Loop for setting groups of LED's each cycle function
