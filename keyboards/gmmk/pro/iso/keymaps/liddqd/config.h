@@ -17,12 +17,12 @@
 #pragma once
 
 /* Send up to 4 key press events per scan */
-#define QMK_KEYS_PER_SCAN 12
+#define QMK_KEYS_PER_SCAN 4
 
 /* Set debounce time to 10ms from 5ms -- double input issue [SPACE] 
    from ../../../gmmk/pro/config.h */
 /* Set debounce time to 5ms */
-#define DEBOUNCE 5
+#define DEBOUNCE 16
 
 /* Force NKRO on boot up regardless of the setting saved in the EEPROM (uncomment to enable it) */
 #define FORCE_NKRO
