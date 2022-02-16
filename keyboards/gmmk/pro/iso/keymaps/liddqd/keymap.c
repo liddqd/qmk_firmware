@@ -201,7 +201,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 */
 bool encoder_update_user(uint8_t index, bool clockwise) {
     uint8_t mods_state = get_mods();
-    if (mods_state & MOD_BIT(KC_LSFT) ) { // If you are holding L shift,
+    if (mods_state & MOD_BIT(KC_RSFT) ) { // If you are holding L shift,
        
        if (clockwise) {
            tap_code(KC_J);
