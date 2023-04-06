@@ -16,4 +16,13 @@
 
 #pragma once
 
-#define RGB_DISABLE_TIMEOUT 300000 // number of milliseconds to wait until rgb automatically turns off
+/* Set debounce time to 16ms from 5ms -- double input issue [SPACE] 
+   from ../../../gmmk/pro/config.h */
+
+// number of milliseconds to wait until rgb automatically turns off
+#define RGB_DISABLE_TIMEOUT 300000
+
+// debug scan rate
+#ifdef CONSOLE_ENABLE
+	#define DEBUG_MATRIX_SCAN_RATE
+#endif
